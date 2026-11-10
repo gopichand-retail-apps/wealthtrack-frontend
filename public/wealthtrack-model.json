@@ -1,0 +1,612 @@
+{
+  "version": 1,
+  "appId": "wealthtrack",
+  "locale": "en-US",
+  "messages": {
+    "greeting": "Good morning",
+    "profileName": "Taylor Morgan",
+    "profileInitials": "TM",
+    "profileRole": "Household planner",
+    "appVersionLabel": "Version",
+    "workspace": "Household finances",
+    "reportingPeriod": "Reporting period",
+    "overview": "Overview",
+    "overviewDescription": "A clearer view of what's coming in, going out, and planned ahead.",
+    "transactions": "Transactions",
+    "transactionsDescription": "Search and review the activity behind your cash flow.",
+    "budgets": "Budgets",
+    "budgetsDescription": "Compare this month's spending with the limits you set.",
+    "goals": "Goals",
+    "goalsDescription": "Keep long-term plans visible alongside everyday decisions.",
+    "recurring": "Recurring commitments",
+    "recurringDescription": "Review the next scheduled bills and subscriptions.",
+    "import": "Import activity",
+    "importDescription": "Preview a CSV, fix any issues, then add validated transactions.",
+    "monthToDate": "Month to date",
+    "cashPosition": "Cash position",
+    "income": "Income",
+    "spending": "Spending",
+    "netCashFlow": "Net cash flow",
+    "savingsRate": "Savings rate",
+    "vsLastMonth": "vs last month",
+    "cashFlow": "Cash flow",
+    "spendingByCategory": "Spending by category",
+    "recentTransactions": "Recent activity",
+    "latestTransactions": "Latest transactions",
+    "accounts": "Accounts",
+    "accountBalances": "Account balances",
+    "transactionCount": "transactions",
+    "topBudget": "Budget watch",
+    "goalProgress": "Goal progress",
+    "upcomingBills": "Coming up",
+    "viewAll": "View all",
+    "viewTransactions": "View transactions",
+    "viewBudgets": "View budgets",
+    "viewGoals": "View goals",
+    "viewRecurring": "View recurring",
+    "exportCsv": "Export CSV",
+    "refreshData": "Refresh data",
+    "date": "Date",
+    "description": "Description",
+    "category": "Category",
+    "account": "Account",
+    "amount": "Amount",
+    "merchant": "Merchant",
+    "type": "Type",
+    "searchTransactions": "Search transactions",
+    "searchPlaceholder": "Search description or merchant",
+    "clearSearch": "Clear search",
+    "clearFilters": "Clear filters",
+    "filterCategory": "Filter category",
+    "allCategories": "All categories",
+    "allAccounts": "All accounts",
+    "sortBy": "Sort by",
+    "newestFirst": "Newest first",
+    "largestFirst": "Largest amount",
+    "noTransactions": "No transactions match these filters.",
+    "budgetLimit": "Monthly limit",
+    "spent": "Spent",
+    "remaining": "Remaining",
+    "overBudget": "Over limit",
+    "withinBudget": "Within plan",
+    "goalTarget": "Target",
+    "goalSaved": "Saved so far",
+    "goalDeadline": "Target date",
+    "dueDate": "Due date",
+    "daysUntilDue": "days",
+    "noBills": "No upcoming recurring commitments.",
+    "nextCharge": "Next charge",
+    "recurrence": "Frequency",
+    "monthly": "Monthly",
+    "weekly": "Weekly",
+    "annual": "Annual",
+    "downloadTemplate": "Download CSV template",
+    "chooseFile": "Choose CSV file",
+    "dropFile": "Drop a CSV file here or choose a file",
+    "selectedFile": "Selected file",
+    "previewImport": "Preview import",
+    "previewing": "Checking file",
+    "confirmImport": "Import transactions",
+    "importing": "Importing",
+    "cancelImport": "Cancel import",
+    "previewTitle": "Review before importing",
+    "previewDescription": "Only validated rows will be included in this import.",
+    "validRows": "Valid rows",
+    "invalidRows": "Rows to fix",
+    "importTotal": "Net amount",
+    "rowNumber": "Row",
+    "rowError": "Issue",
+    "previewSuccess": "The file is ready to import.",
+    "importSuccess": "Transactions imported successfully.",
+    "importDuplicate": "This import was already processed; no duplicate rows were added.",
+    "importFailure": "The import could not be completed.",
+    "invalidImportRequest": "The file could not be submitted for validation.",
+    "importSummary": "The file was checked locally. No rows are saved until you confirm the import.",
+    "previewFailure": "The file could not be checked.",
+    "invalidFile": "Choose a CSV file within the configured size and row limits.",
+    "emptyFile": "The CSV contains no transaction rows.",
+    "importNoRows": "There are no valid rows to import.",
+    "loadError": "The finance workspace could not be loaded.",
+    "loading": "Loading finance activity...",
+    "retry": "Try again",
+    "refresh": "Refresh data",
+    "export": "Export transactions",
+    "exportReady": "The transaction export is ready.",
+    "exportFailure": "The transaction export could not be completed.",
+    "themeToggle": "Toggle light and dark mode",
+    "themePreference": "Appearance",
+    "lightMode": "Light mode",
+    "darkMode": "Dark mode",
+    "serviceConnected": "Finance service connected",
+    "serviceUnavailable": "Finance service unavailable",
+    "deviceOffline": "Device offline",
+    "offlineNotice": "Your device is offline. Displayed records may be out of date; current data will load when you reconnect.",
+    "localDatabase": "Local SQLite database",
+    "localStorage": "Local storage",
+    "apiService": "Finance API",
+    "storageDescription": "Synthetic accounts and transactions are stored by the local API.",
+    "dataHandling": "Data handling",
+    "dataHandlingDescription": "This workspace uses synthetic financial records and does not connect to a financial institution.",
+    "security": "Security boundary",
+    "securityDescription": "The API is restricted to configured local origins and returns request IDs. It has no sign-in yet.",
+    "primaryNavigation": "Primary navigation",
+    "openNavigation": "Open navigation",
+    "closeNavigation": "Close navigation",
+    "reports": {
+      "incomeRecord": "Income",
+      "expenseRecord": "Expense"
+    },
+    "errors": {
+      "invalidRequest": "The request could not be understood.",
+      "invalidCsv": "The CSV headers or transaction values are invalid.",
+      "payloadTooLarge": "The import is larger than the allowed limit.",
+      "originNotAllowed": "This application origin is not allowed.",
+      "notFound": "The requested finance record was not found.",
+      "rateLimited": "Too many requests. Try again shortly.",
+      "server": "The request could not be completed. Try again."
+    },
+    "importIssues": {
+      "invalidRow": "The row is missing a required field or has an invalid value.",
+      "invalidDate": "Use a valid YYYY-MM-DD date.",
+      "invalidAmount": "Use an amount with at most two decimal places and not zero.",
+      "invalidCategory": "Choose a category from the workspace list.",
+      "invalidAccount": "Choose an account from the workspace list.",
+      "invalidCurrency": "The currency must match this workspace.",
+      "amountSign": "Income must be positive and expenses must be negative.",
+      "payloadTooLarge": "The file is larger than the allowed limit.",
+      "invalidCsv": "The CSV structure could not be read.",
+      "invalidHeaders": "The CSV headers do not match the required template.",
+      "emptyFile": "The CSV contains no transaction rows.",
+      "tooManyRows": "The CSV contains more rows than the allowed limit.",
+      "aggregateAmount": "This import would exceed the exact calculation range. Reduce the amounts or replace the local dataset."
+    },
+    "categories": {
+      "income": "Income",
+      "housing": "Housing",
+      "utilities": "Utilities",
+      "groceries": "Groceries",
+      "dining": "Dining",
+      "transport": "Transport",
+      "health": "Health",
+      "shopping": "Shopping",
+      "education": "Education",
+      "entertainment": "Entertainment",
+      "savings": "Savings",
+      "uncategorized": "Uncategorized"
+    }
+  },
+  "data": {
+    "app": {
+      "name": "WealthTrack",
+      "descriptor": "Personal finance workspace",
+      "description": "Understand your household cash flow, plans, and upcoming commitments from one organized view.",
+      "apiBaseUrl": "http://127.0.0.1:5902/api/v1",
+      "allowedOrigins": [
+        "http://127.0.0.1:5901",
+        "http://localhost:5901"
+      ],
+      "currency": "USD",
+      "timezone": "UTC",
+      "themeStorageKey": "wealthtrack-theme",
+      "defaultTheme": "light"
+    },
+    "api": {
+      "rateLimit": 120,
+      "rateWindowMs": 60000
+    },
+    "navigation": [
+      {
+        "id": "overview",
+        "label": "Overview",
+        "icon": "LayoutDashboard"
+      },
+      {
+        "id": "transactions",
+        "label": "Transactions",
+        "icon": "ArrowLeftRight"
+      },
+      {
+        "id": "budgets",
+        "label": "Budgets",
+        "icon": "ChartNoAxesColumnIncreasing"
+      },
+      {
+        "id": "goals",
+        "label": "Goals",
+        "icon": "Flag"
+      },
+      {
+        "id": "recurring",
+        "label": "Recurring",
+        "icon": "CalendarClock"
+      },
+      {
+        "id": "import",
+        "label": "Import",
+        "icon": "FileUp"
+      }
+    ],
+    "periods": [
+      {
+        "id": "7d",
+        "label": "Last 7 days",
+        "days": 7
+      },
+      {
+        "id": "30d",
+        "label": "Last 30 days",
+        "days": 30
+      },
+      {
+        "id": "90d",
+        "label": "Last 90 days",
+        "days": 90
+      }
+    ],
+    "filters": {
+      "defaultPeriodId": "30d"
+    },
+    "categories": [
+      {
+        "id": "income",
+        "kind": "income",
+        "color": "#71937a"
+      },
+      {
+        "id": "housing",
+        "kind": "expense",
+        "color": "#b67a5e"
+      },
+      {
+        "id": "utilities",
+        "kind": "expense",
+        "color": "#66859b"
+      },
+      {
+        "id": "groceries",
+        "kind": "expense",
+        "color": "#9b8b56"
+      },
+      {
+        "id": "dining",
+        "kind": "expense",
+        "color": "#c77962"
+      },
+      {
+        "id": "transport",
+        "kind": "expense",
+        "color": "#78859c"
+      },
+      {
+        "id": "health",
+        "kind": "expense",
+        "color": "#a16e79"
+      },
+      {
+        "id": "shopping",
+        "kind": "expense",
+        "color": "#8e7960"
+      },
+      {
+        "id": "education",
+        "kind": "expense",
+        "color": "#7b907f"
+      },
+      {
+        "id": "entertainment",
+        "kind": "expense",
+        "color": "#82769a"
+      },
+      {
+        "id": "savings",
+        "kind": "transfer",
+        "color": "#4f8068"
+      },
+      {
+        "id": "uncategorized",
+        "kind": "expense",
+        "color": "#89938f"
+      }
+    ],
+    "csv": {
+      "headers": [
+        "date",
+        "description",
+        "category",
+        "account",
+        "amount",
+        "currency"
+      ],
+      "maximumRows": 500,
+      "maximumBytes": 65536,
+      "sampleFileName": "wealthtrack-transactions.csv",
+      "templateRows": [
+        [
+          "2026-10-28",
+          "Market groceries",
+          "groceries",
+          "checking",
+          "-64.18",
+          "USD"
+        ],
+        [
+          "2026-10-29",
+          "Paycheck",
+          "income",
+          "checking",
+          "2400.00",
+          "USD"
+        ]
+      ]
+    },
+    "seed": {
+      "version": 1,
+      "accounts": [
+        {
+          "id": "checking",
+          "name": "Everyday checking",
+          "type": "checking",
+          "currency": "USD",
+          "openingBalanceCents": 286000
+        },
+        {
+          "id": "savings",
+          "name": "Reserve savings",
+          "type": "savings",
+          "currency": "USD",
+          "openingBalanceCents": 1285000
+        },
+        {
+          "id": "credit",
+          "name": "Household card",
+          "type": "credit",
+          "currency": "USD",
+          "openingBalanceCents": -34218
+        }
+      ],
+      "transactions": [
+        {
+          "id": "seed-paycheck-1",
+          "daysAgo": 2,
+          "description": "Payroll deposit",
+          "category": "income",
+          "accountId": "checking",
+          "amountCents": 240000,
+          "currency": "USD"
+        },
+        {
+          "id": "seed-rent-1",
+          "daysAgo": 3,
+          "description": "Monthly rent",
+          "category": "housing",
+          "accountId": "checking",
+          "amountCents": -145000,
+          "currency": "USD"
+        },
+        {
+          "id": "seed-market-1",
+          "daysAgo": 1,
+          "description": "Market groceries",
+          "category": "groceries",
+          "accountId": "credit",
+          "amountCents": -6418,
+          "currency": "USD"
+        },
+        {
+          "id": "seed-electric-1",
+          "daysAgo": 4,
+          "description": "Electric service",
+          "category": "utilities",
+          "accountId": "checking",
+          "amountCents": -12422,
+          "currency": "USD"
+        },
+        {
+          "id": "seed-cafe-1",
+          "daysAgo": 1,
+          "description": "Corner cafe",
+          "category": "dining",
+          "accountId": "credit",
+          "amountCents": -1840,
+          "currency": "USD"
+        },
+        {
+          "id": "seed-transit-1",
+          "daysAgo": 2,
+          "description": "Transit pass",
+          "category": "transport",
+          "accountId": "checking",
+          "amountCents": -7250,
+          "currency": "USD"
+        },
+        {
+          "id": "seed-pharmacy-1",
+          "daysAgo": 6,
+          "description": "Neighborhood pharmacy",
+          "category": "health",
+          "accountId": "credit",
+          "amountCents": -3275,
+          "currency": "USD"
+        },
+        {
+          "id": "seed-books-1",
+          "daysAgo": 7,
+          "description": "Used books",
+          "category": "education",
+          "accountId": "credit",
+          "amountCents": -2460,
+          "currency": "USD"
+        },
+        {
+          "id": "seed-home-1",
+          "daysAgo": 8,
+          "description": "Hardware store",
+          "category": "shopping",
+          "accountId": "checking",
+          "amountCents": -4899,
+          "currency": "USD"
+        },
+        {
+          "id": "seed-paycheck-2",
+          "daysAgo": 16,
+          "description": "Payroll deposit",
+          "category": "income",
+          "accountId": "checking",
+          "amountCents": 240000,
+          "currency": "USD"
+        },
+        {
+          "id": "seed-grocery-2",
+          "daysAgo": 12,
+          "description": "Neighborhood market",
+          "category": "groceries",
+          "accountId": "credit",
+          "amountCents": -9132,
+          "currency": "USD"
+        },
+        {
+          "id": "seed-stream-1",
+          "daysAgo": 13,
+          "description": "Film club monthly",
+          "category": "entertainment",
+          "accountId": "credit",
+          "amountCents": -1299,
+          "currency": "USD"
+        },
+        {
+          "id": "seed-rent-2",
+          "daysAgo": 33,
+          "description": "Monthly rent",
+          "category": "housing",
+          "accountId": "checking",
+          "amountCents": -145000,
+          "currency": "USD"
+        },
+        {
+          "id": "seed-paycheck-3",
+          "daysAgo": 35,
+          "description": "Payroll deposit",
+          "category": "income",
+          "accountId": "checking",
+          "amountCents": 240000,
+          "currency": "USD"
+        },
+        {
+          "id": "seed-dining-2",
+          "daysAgo": 38,
+          "description": "Sunday table",
+          "category": "dining",
+          "accountId": "credit",
+          "amountCents": -4750,
+          "currency": "USD"
+        }
+      ],
+      "budgets": [
+        {
+          "id": "budget-housing",
+          "categoryId": "housing",
+          "limitCents": 150000,
+          "displayOrder": 1
+        },
+        {
+          "id": "budget-groceries",
+          "categoryId": "groceries",
+          "limitCents": 55000,
+          "displayOrder": 2
+        },
+        {
+          "id": "budget-dining",
+          "categoryId": "dining",
+          "limitCents": 30000,
+          "displayOrder": 3
+        },
+        {
+          "id": "budget-transport",
+          "categoryId": "transport",
+          "limitCents": 18000,
+          "displayOrder": 4
+        },
+        {
+          "id": "budget-shopping",
+          "categoryId": "shopping",
+          "limitCents": 26000,
+          "displayOrder": 5
+        },
+        {
+          "id": "budget-health",
+          "categoryId": "health",
+          "limitCents": 20000,
+          "displayOrder": 6
+        }
+      ],
+      "goals": [
+        {
+          "id": "goal-emergency",
+          "name": "Emergency reserve",
+          "savedCents": 485000,
+          "targetCents": 800000,
+          "targetDate": "2027-06-30",
+          "displayOrder": 1
+        },
+        {
+          "id": "goal-home",
+          "name": "Home refresh",
+          "savedCents": 126000,
+          "targetCents": 300000,
+          "targetDate": "2027-03-31",
+          "displayOrder": 2
+        },
+        {
+          "id": "goal-learning",
+          "name": "Learning fund",
+          "savedCents": 42000,
+          "targetCents": 90000,
+          "targetDate": "2027-01-31",
+          "displayOrder": 3
+        }
+      ],
+      "bills": [
+        {
+          "id": "bill-rent",
+          "name": "Monthly rent",
+          "categoryId": "housing",
+          "amountCents": 145000,
+          "accountId": "checking",
+          "cadence": "monthly",
+          "dueInDays": 3,
+          "displayOrder": 1
+        },
+        {
+          "id": "bill-electric",
+          "name": "Electric service",
+          "categoryId": "utilities",
+          "amountCents": 12422,
+          "accountId": "checking",
+          "cadence": "monthly",
+          "dueInDays": 7,
+          "displayOrder": 2
+        },
+        {
+          "id": "bill-transit",
+          "name": "Transit pass",
+          "categoryId": "transport",
+          "amountCents": 7250,
+          "accountId": "checking",
+          "cadence": "monthly",
+          "dueInDays": 11,
+          "displayOrder": 3
+        },
+        {
+          "id": "bill-film",
+          "name": "Film club monthly",
+          "categoryId": "entertainment",
+          "amountCents": 1299,
+          "accountId": "credit",
+          "cadence": "monthly",
+          "dueInDays": 16,
+          "displayOrder": 4
+        }
+      ]
+    }
+  }
+}

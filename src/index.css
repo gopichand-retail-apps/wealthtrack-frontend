@@ -1,0 +1,40 @@
+:root {
+  font-family: "Roboto Variable", Roboto, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+html {
+  min-width: 320px;
+  min-height: 100%;
+  background: #f2f5f1;
+}
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+p {
+  font-family: "Roboto Slab Variable", "Roboto Slab", Georgia, serif;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+#root {
+  min-height: 100vh;
+}
+::selection {
+  color: #173a32;
+  background: #d3e6d8;
+}
