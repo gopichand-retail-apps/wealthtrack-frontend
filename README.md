@@ -1,5 +1,8 @@
 # WealthTrack Frontend
 
+![CI](https://github.com/gopichand-retail-apps/wealthtrack-frontend/actions/workflows/ci.yml/badge.svg)
+**Live demo:** https://wealthtrack-frontend-eight.vercel.app/
+
 [Architecture guide](docs/architecture.md) — source map, workflows, contracts, data, security, and checks.
 
 ## Repository layout and Windows workflow
