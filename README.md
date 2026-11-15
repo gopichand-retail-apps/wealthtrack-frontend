@@ -1,6 +1,7 @@
 # WealthTrack Frontend
 
 [Architecture guide](docs/architecture.md) — source map, workflows, contracts, data, security, and checks.
+**Live demo:** https://wealthtrack-frontend-eight.vercel.app/
 
 ## Repository layout and Windows workflow
 
