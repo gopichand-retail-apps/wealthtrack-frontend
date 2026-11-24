@@ -147,6 +147,47 @@ describe("WealthTrack API client", () => {
     });
   });
 
+  it("carries server row issues and maps a reused import key to model copy", async () => {
+    const rowIssues = [
+      { rowNumber: 3, code: "invalidDate" },
+      { rowNumber: 0, code: "aggregateAmount" },
+    ];
+    installApiFetch({
+      "/api/v1/imports": () =>
+        jsonResponse(
+          { error: { code: "INVALID_CSV", details: rowIssues } },
+          422,
+        ),
+    });
+    await expect(commitImport(model, "csv", "key-1")).rejects.toMatchObject({
+      status: 422,
+      code: "INVALID_CSV",
+      details: rowIssues,
+    });
+
+    installApiFetch({
+      "/api/v1/imports": () =>
+        jsonResponse({ error: { code: "IDEMPOTENCY_KEY_REUSED" } }, 409),
+    });
+    await expect(commitImport(model, "csv", "key-1")).rejects.toMatchObject({
+      status: 409,
+      code: "IDEMPOTENCY_KEY_REUSED",
+      message: model.copy.errors.idempotencyKeyReused,
+      details: [],
+    });
+
+    installApiFetch({
+      "/api/v1/imports": () =>
+        jsonResponse(
+          { error: { code: "INVALID_CSV", details: "unreadable" } },
+          422,
+        ),
+    });
+    await expect(commitImport(model, "csv", "key-1")).rejects.toMatchObject({
+      details: [],
+    });
+  });
+
   it("uses safe generic errors for unknown codes and malformed response bodies", async () => {
     installApiFetch({
       "/api/v1/summary": () =>

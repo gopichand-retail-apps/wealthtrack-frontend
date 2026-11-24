@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Download,
   FileUp,
@@ -15,7 +15,11 @@ import {
   previewImport,
 } from "../lib/api";
 import { copy, formatMoney, nestedCopy } from "../lib/format";
+import { createImportIntent } from "../lib/importIntent";
+import { classifyCommitFailure } from "../lib/importOutcome";
+import type { ImportOutcome } from "../lib/importOutcome";
 import type { ImportPreview, PublicModel } from "../lib/types";
+import { ImportOutcomePanel } from "./ImportOutcomePanel";
 
 interface ImportWorkflowProps {
   model: PublicModel;
@@ -28,9 +32,16 @@ export function ImportWorkflow({ model, onComplete }: ImportWorkflowProps) {
   const [preview, setPreview] = useState<ImportPreview | null>(null);
   const [busy, setBusy] = useState<"preview" | "commit" | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [outcome, setOutcome] = useState<ImportOutcome | null>(null);
+  const [intent] = useState(createImportIntent);
+  const outcomeHeading = useRef<HTMLHeadingElement>(null);
   const canCommit = Boolean(
     preview && preview.validCount > 0 && preview.invalidCount === 0,
   );
+
+  useEffect(() => {
+    if (outcome) outcomeHeading.current?.focus();
+  }, [outcome]);
 
   async function readFile(file: File | undefined) {
     if (!file) return;
@@ -43,6 +54,7 @@ export function ImportWorkflow({ model, onComplete }: ImportWorkflowProps) {
       return;
     }
     setError(null);
+    setOutcome(null);
     setPreview(null);
     setFileName(file.name);
     setCsvText(await file.text());
@@ -51,10 +63,16 @@ export function ImportWorkflow({ model, onComplete }: ImportWorkflowProps) {
   async function showPreview() {
     setBusy("preview");
     setError(null);
+    setOutcome(null);
     try {
       const nextPreview = await previewImport(model, csvText);
       setPreview(nextPreview);
-      if (nextPreview.invalidCount) setError(copy(model, "previewFailure"));
+      if (nextPreview.invalidCount) {
+        setOutcome({
+          kind: "needsCorrection",
+          issues: nextPreview.invalidRows,
+        });
+      }
     } catch (requestError) {
       setError(
         requestError instanceof ApiError
@@ -70,21 +88,23 @@ export function ImportWorkflow({ model, onComplete }: ImportWorkflowProps) {
     if (!canCommit || !preview) return;
     setBusy("commit");
     setError(null);
+    setOutcome((current) => (current?.kind === "awaiting" ? current : null));
+    const key = intent.keyFor(csvText);
     try {
-      const result = await commitImport(model, csvText, crypto.randomUUID());
-      setError(
-        copy(model, result.replayed ? "importDuplicate" : "importSuccess"),
-      );
+      const result = await commitImport(model, csvText, key);
+      intent.discard();
+      setOutcome({ kind: result.replayed ? "replayed" : "committed", result });
       onComplete();
       setPreview(null);
       setCsvText("");
       setFileName("");
     } catch (requestError) {
-      setError(
-        requestError instanceof ApiError
-          ? requestError.message
-          : copy(model, "importFailure"),
-      );
+      const failure = classifyCommitFailure(requestError);
+      if (failure.discardKey) {
+        intent.discard();
+        setPreview(null);
+      }
+      setOutcome(failure.outcome);
     } finally {
       setBusy(null);
     }
@@ -138,6 +158,7 @@ export function ImportWorkflow({ model, onComplete }: ImportWorkflowProps) {
             id="wealthtrack-csv"
             type="file"
             accept=".csv,text/csv"
+            disabled={busy !== null}
             onChange={(event) => void readFile(event.target.files?.[0])}
           />
         </label>
@@ -157,10 +178,12 @@ export function ImportWorkflow({ model, onComplete }: ImportWorkflowProps) {
             type="button"
             className="button button-secondary"
             onClick={() => {
+              intent.discard();
               setCsvText("");
               setFileName("");
               setPreview(null);
               setError(null);
+              setOutcome(null);
             }}
             disabled={!csvText || busy !== null}
           >
@@ -184,12 +207,20 @@ export function ImportWorkflow({ model, onComplete }: ImportWorkflowProps) {
           </button>
         </div>
       </section>
+      {outcome ? (
+        <ImportOutcomePanel
+          model={model}
+          outcome={outcome}
+          headingRef={outcomeHeading}
+        />
+      ) : null}
       {preview ? (
         <ImportPreviewPanel
           model={model}
           preview={preview}
           canCommit={canCommit}
           busy={busy}
+          retrying={outcome?.kind === "awaiting"}
           onCommit={() => void commit()}
         />
       ) : null}
@@ -202,12 +233,14 @@ function ImportPreviewPanel({
   preview,
   canCommit,
   busy,
+  retrying,
   onCommit,
 }: {
   model: PublicModel;
   preview: ImportPreview;
   canCommit: boolean;
   busy: "preview" | "commit" | null;
+  retrying: boolean;
   onCommit: () => void;
 }) {
   return (
@@ -235,20 +268,11 @@ function ImportPreviewPanel({
           <strong>{formatMoney(model, preview.netAmountCents)}</strong>
         </div>
       </div>
-      {preview.invalidRows.length ? (
-        <div className="import-issues" role="alert">
-          {preview.invalidRows.slice(0, 20).map((issue) => (
-            <p key={`${issue.rowNumber}-${issue.code}`}>
-              {copy(model, "rowNumber")} {issue.rowNumber}:{" "}
-              {nestedCopy(model, "importIssues", issue.code)}
-            </p>
-          ))}
-        </div>
-      ) : (
+      {preview.invalidCount === 0 ? (
         <p className="import-ready" role="status">
           {copy(model, "previewSuccess")}
         </p>
-      )}
+      ) : null}
       <button
         type="button"
         className="button button-primary"
@@ -262,7 +286,7 @@ function ImportPreviewPanel({
         )}
         {busy === "commit"
           ? copy(model, "importing")
-          : copy(model, "confirmImport")}
+          : copy(model, retrying ? "importRetry" : "confirmImport")}
       </button>
     </section>
   );

@@ -18,7 +18,7 @@ The client is at http://127.0.0.1:5901; start the API separately. For both servi
 
 See the [app overview](docs/architecture.md#1-scope-users-and-repository-boundary) and [canonical architecture](docs/architecture.md). The architecture guide is included in this repository. No cross-app backend integration is added by this organization change.
 
-WealthTrack is a local React + TypeScript workspace for reviewing synthetic household finance records. The frontend owns presentation, accessible filters, charts, local theme preference, and CSV import/export interactions; the API owns validation and persistence.
+WealthTrack is a local React + TypeScript workspace for reviewing synthetic household finance records. The frontend owns presentation, accessible filters, charts, local theme preference, and CSV import/export interactions; the API owns validation and persistence. After a lost connection the import view says whether the file was confirmed, already recorded, or still needs correction: the browser keeps one in-memory import key per confirmed file and retries with it, so a retry never adds rows twice. The key is never stored in the browser. Messages for the new states come from `public/wealthtrack-model.json`, which the API also reads, so the frontend and API changes ship together.
 
 ## Run
 

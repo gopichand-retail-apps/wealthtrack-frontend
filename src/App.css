@@ -842,6 +842,57 @@
   color: var(--positive);
   font-size: 10px;
 }
+.drop-zone:focus-within {
+  outline: 2px solid var(--coral);
+  outline-offset: 3px;
+}
+.import-outcome {
+  padding: 16px;
+  border-left: 3px solid var(--line-strong);
+}
+.import-outcome.is-committed,
+.import-outcome.is-replayed {
+  border-left-color: var(--positive);
+}
+.import-outcome.is-awaiting,
+.import-outcome.is-rejected,
+.import-outcome.is-conflict,
+.import-outcome.is-needsCorrection {
+  border-left-color: var(--negative);
+}
+.import-outcome h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 650;
+}
+.import-outcome h2:focus-visible {
+  outline: 2px solid var(--coral);
+  outline-offset: 3px;
+}
+.import-outcome p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+.import-outcome .preview-summary.is-pair {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 0;
+}
+.import-issue-list {
+  padding: 8px 10px 8px 24px;
+  margin: 10px 0 0;
+  background: #fbefeb;
+  border: 1px solid #ecd6cf;
+  border-radius: 3px;
+}
+.import-issue-list li {
+  margin: 3px 0;
+  color: var(--negative);
+  font-size: 9px;
+  overflow-wrap: anywhere;
+}
 .spin {
   animation: wealth-spin 800ms linear infinite;
 }
