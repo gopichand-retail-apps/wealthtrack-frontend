@@ -41,6 +41,17 @@ describe("WealthTrack content model", () => {
     expect(contentModelSchema.safeParse(invalidAmount).success).toBe(false);
   });
 
+  it("requires a message for a reused import key", () => {
+    expect(contentModelSchema.safeParse(envelope).success).toBe(true);
+
+    const missingMessage = structuredClone(envelope);
+    Reflect.deleteProperty(
+      missingMessage.messages.errors,
+      "idempotencyKeyReused",
+    );
+    expect(contentModelSchema.safeParse(missingMessage).success).toBe(false);
+  });
+
   it("requires translated copy and formats integer-cent values", () => {
     const model = publicModelSchema.parse(envelope);
 

@@ -212,17 +212,23 @@ sequenceDiagram
   participant API as Finance API
   participant DB as SQLite
   Planner->>UI: Confirm a clean preview
+  UI->>UI: Create the import key for this file (in memory)
   UI->>API: POST /imports with Idempotency-Key
-  API->>API: Revalidate complete CSV
+  API->>API: Revalidate complete CSV, digest the normalized rows
   API->>DB: BEGIN IMMEDIATE
+  API->>DB: Same key stored? Compare digests
   API->>DB: Insert transactions, batch, aggregate event
   API->>DB: COMMIT
   DB-->>API: Commit result
-  API-->>UI: rowsAdded, totalNetCents, replayed
-  UI-->>Planner: Success and refreshed data
+  API-->>UI: rowsAdded, totalNetCents, replayed (or 409)
+  UI-->>Planner: Announced outcome and refreshed data
 ```
 
-**Precondition:** preview has no invalid rows and at least one valid row. **Success:** all records and the batch commit atomically. **Failure/recovery:** invalid data is rejected without writes; retrying the same key is idempotent. No user/tenant key is accepted because authentication is not implemented.
+**Precondition:** preview has no invalid rows and at least one valid row. **Success:** all records and the batch commit atomically and the planner sees "Import confirmed". **Failure/recovery:** invalid data is rejected without writes and shown as "Needs correction" with the rows to fix. If the connection drops or the server errors, the planner sees "Waiting for confirmation" because the import may or may not have been saved; the button becomes "Retry import" and resends the **same key**, so the server either commits it once or answers with the earlier batch, shown as "Already recorded". No user/tenant key is accepted because authentication is not implemented.
+
+**Import key lifecycle** ([src/lib/importIntent.ts](../src/lib/importIntent.ts), [src/lib/importOutcome.ts](../src/lib/importOutcome.ts)). The browser creates the key when the planner confirms, not inside the HTTP helper. It is reused for every retry of the same file content, replaced when the content changes, and discarded after a confirmed result (committed or replayed), a rejection that names rows to fix, a reused-key conflict (409), or cancel. A refusal that saved nothing (for example a rate limit) keeps the key. The key lives in component memory only: it is never written to browser storage and is lost on reload or navigation, so an unconfirmed import cannot be resumed after a reload. There is no sign-in, so there is no sign-out discard. Each HTTP attempt receives its own server-generated `X-Request-ID`; the client does not send one.
+
+**Outcome states** ([src/components/ImportOutcomePanel.tsx](../src/components/ImportOutcomePanel.tsx)). Five states share one panel placed under the file chooser, all text from the content model: confirmed, already recorded, waiting for confirmation, not saved (a definite refusal or a 409), and needs correction. A saved import is announced politely (`role="status"`); every state that needs action is announced assertively (`role="alert"`). Focus moves to the panel heading when an outcome appears. The needs-correction list shows the first 20 issues and counts the rest; file-level issues carry no row number.
 
 #### 7. Review budgets
 
@@ -438,7 +444,10 @@ CI configuration is listed in section 3. Run the configured checks before mergin
   text is parsed exactly, not through binary floating-point conversion.
 - CSV preview is read-only. Commit revalidates the entire file and atomically
   writes transaction rows, an import batch, and an aggregate activity event.
-  `Idempotency-Key` makes a retry of the same committed batch replay-safe.
+  `Idempotency-Key` makes a retry of the same committed batch replay-safe. The
+  browser holds one key per confirmed file in memory and reuses it on retry; the
+  server compares a content digest, so the same key with a changed file returns
+  409 instead of a silent replay.
 - New seed rows use `INSERT OR IGNORE`; this does not migrate changed seed data
   into an existing SQLite file. There is no versioned schema migration system.
 - The browser persists only the non-sensitive theme preference. No account,

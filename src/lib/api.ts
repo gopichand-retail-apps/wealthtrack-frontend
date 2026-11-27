@@ -9,16 +9,19 @@ import {
   financeSummarySchema,
   goalListSchema,
   healthSchema,
+  importIssueListSchema,
   importPreviewSchema,
   importResultSchema,
   transactionListSchema,
 } from "./schemas";
-import type { PublicModel } from "./types";
+import type { ImportIssue, PublicModel } from "./types";
 
 export class ApiError extends Error {
   readonly status: number;
   readonly code: string;
   readonly requestId: string | null;
+  /** Row issues the server attached to a rejected import; empty otherwise. */
+  readonly details: ImportIssue[] = [];
 
   constructor(
     message: string,
@@ -34,12 +37,24 @@ export class ApiError extends Error {
   }
 }
 
+/** A server refusal that names the rows to fix, such as a rejected commit. */
+export class ImportRowsError extends ApiError {
+  readonly details: ImportIssue[];
+
+  constructor(source: ApiError, details: ImportIssue[]) {
+    super(source.message, source.status, source.code, source.requestId);
+    this.name = "ImportRowsError";
+    this.details = details;
+  }
+}
+
 const errorCopyByCode: Readonly<Record<string, string>> = {
   INVALID_PERIOD: "invalidRequest",
   INVALID_FILTER: "invalidRequest",
   INVALID_CATEGORY: "invalidRequest",
   INVALID_IMPORT_REQUEST: "invalidRequest",
   IDEMPOTENCY_KEY_REQUIRED: "invalidRequest",
+  IDEMPOTENCY_KEY_REUSED: "idempotencyKeyReused",
   INVALID_JSON: "invalidRequest",
   INVALID_CSV: "invalidCsv",
   PAYLOAD_TOO_LARGE: "payloadTooLarge",
@@ -126,17 +141,26 @@ async function requestData<T>(
   }
   if (!response.ok) {
     const parsedError = z
-      .object({ error: z.object({ code: z.string().min(1) }) })
+      .object({
+        error: z.object({
+          code: z.string().min(1),
+          details: z.unknown().optional(),
+        }),
+      })
       .safeParse(payload);
     const errorCode = parsedError.success
       ? parsedError.data.error.code
       : "REQUEST_FAILED";
-    throw new ApiError(
+    const issues = importIssueListSchema.safeParse(
+      parsedError.success ? parsedError.data.error.details : undefined,
+    );
+    const error = new ApiError(
       getErrorMessage(model, errorCode),
       response.status,
       errorCode,
       requestId,
     );
+    throw issues.success ? new ImportRowsError(error, issues.data) : error;
   }
   const data =
     typeof payload === "object" && payload !== null && "data" in payload

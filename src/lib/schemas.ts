@@ -7,6 +7,7 @@ const messagesSchema = z
       .object({
         invalidRequest: z.string().min(1),
         invalidCsv: z.string().min(1),
+        idempotencyKeyReused: z.string().min(1),
         payloadTooLarge: z.string().min(1),
         originNotAllowed: z.string().min(1),
         notFound: z.string().min(1),
@@ -267,11 +268,12 @@ const importPreviewRowSchema = z.object({
   amountCents: z.number().int(),
   currency: z.string(),
 });
+export const importIssueListSchema = z.array(
+  z.object({ rowNumber: z.number().int(), code: z.string() }),
+);
 export const importPreviewSchema = z.object({
   validRows: z.array(importPreviewRowSchema),
-  invalidRows: z.array(
-    z.object({ rowNumber: z.number().int(), code: z.string() }),
-  ),
+  invalidRows: importIssueListSchema,
   validCount: z.number().int(),
   invalidCount: z.number().int(),
   netAmountCents: z.number().int(),
