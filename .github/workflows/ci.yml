@@ -14,6 +14,13 @@ jobs:
           node-version: "22"
           cache: npm
       - run: npm ci
+      - name: Check out the matching backend for end-to-end tests
+        run: |
+          repo=https://github.com/gopichand-retail-apps/wealthtrack-backend.git
+          ref="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
+          git ls-remote --exit-code --heads "$repo" "$ref" > /dev/null || ref=main
+          git clone --depth 1 --branch "$ref" "$repo" ../wealthtrack-backend
+          npm ci --prefix ../wealthtrack-backend
       - run: npx playwright install --with-deps chromium
       - run: npm run format:check
       - run: npm run lint
