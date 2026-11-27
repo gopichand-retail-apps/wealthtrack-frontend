@@ -94,7 +94,9 @@ export function FinanceSidebar({
             {copy(model, "profileInitials")}
           </span>
           <span>
-            <small>{copy(model, "appVersionLabel")} {APP_VERSION}</small>
+            <small>
+              {copy(model, "appVersionLabel")} {APP_VERSION}
+            </small>
             <strong>{copy(model, "profileName")}</strong>
             <small>{copy(model, "profileRole")}</small>
           </span>
